@@ -1,8 +1,5 @@
 <template>
-  <div>
-    <HelloWorld />
-    <button @click="increase">Add</button>
-  </div>
+  <Home />
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";

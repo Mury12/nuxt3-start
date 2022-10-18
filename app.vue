@@ -16,3 +16,29 @@ export default defineComponent({
 });
 </script>
 
+<style>
+:root {
+  --brand-primary: rgb(138, 114, 241);
+  --brand-primary-hover: rgba(138, 114, 241, 0.8);
+  --brand-secondary: rgb(224, 226, 255);
+  --brand-secondary: rgba(224, 226, 255, 0.8);
+}
+body {
+  font-family: "Courgette", Helvetica, sans-serif;
+  background-color: var(--brand-secondary);
+}
+
+.bg-brand-primary {
+  background-color: var(--brand-primary);
+}
+.bg-brand-secondary {
+  background-color: var(--brand-secondary);
+}
+.text-brand-secondary {
+  color: var(--brand-secondary);
+}
+.text-brand-primary {
+  color: var(--brand-primary);
+}
+</style>
+

@@ -1,28 +1,37 @@
 <template>
-  <div class="__page-root bg-red">
-    <BRow class="border">
-      <BCol cols="12" md="2" class="border">
+  <div class="__page-root">
+    <BRow class="page-wrapper">
+      <BCol cols="12" lg="2" class="border border-primary nav-bar">
         <TheNavbar />
       </BCol>
 
-      <BCol cols="12" md="10" class="border">
-        <TheHeader />
-        <BContainer class="main border">
+      <BCol class="px-0">
+        <TheHeader class="default-layout-header" />
+        <BContainer class="main mt-5">
           <slot></slot>
         </BContainer>
       </BCol>
     </BRow>
-    <TheFooter class="border" />
+    <TheFooter class="default-layout-footer" />
   </div>
 </template>
 
 <style scoped>
+.nav-bar {
+  width: 200px;
+}
+
 .__page-root {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   min-height: 100vh;
   max-width: 100vw;
   overflow-x: hidden;
 }
-.bg-red {
-  background: red;
+
+.default-layout-footer,
+.default-layout-header {
+  height: 5em;
 }
 </style>

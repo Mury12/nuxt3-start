@@ -1,6 +1,27 @@
 <template>
-  <div class="header">
-    <button @click="toggleLayout" :class="btnClass">Layout</button>
+  <div class="header bg-brand-primary px-5">
+    <BRow class="h-100 align-items-center">
+      <BCol cols="12" lg="10">
+        <BButton :variant="btnClass" @click="toggleLayout">Layout</BButton>
+      </BCol>
+      <BCol cols="12" lg="2" class="d-flex justify-content-end">
+        <div
+          class="
+            profile-img
+            hover
+            pointer
+            d-flex
+            justify-content-center
+            align-items-center
+            bg-warning
+            user-select-none
+            text-primary
+          "
+        >
+          A
+        </div>
+      </BCol>
+    </BRow>
   </div>
 </template>
 
@@ -11,9 +32,10 @@ export default defineComponent({
   setup() {
     const layout = useLayout();
 
-    function btnClass() {
-      return layout.value === "custom" ? "bg-red" : "bg-blue";
-    }
+    const btnClass = computed(() => {
+      return layout.value === "custom" ? "danger" : "info";
+    });
+
     function toggleLayout() {
       layout.value = layout.value === "custom" ? "default" : "custom";
     }
@@ -23,14 +45,14 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.profile-img {
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  font-size: 2em;
+  font-family: 'Courier New', Courier, monospace;
+}
 .header {
   width: 100%;
-  border: 1px dashed black;
-}
-.bg-red {
-  background: red;
-}
-.bg-blue {
-  background: blue;
 }
 </style>

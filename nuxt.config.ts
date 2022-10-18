@@ -13,5 +13,9 @@ export default defineNuxtConfig({
     },
   },
   modules: ["bootstrap-vue-3/nuxt"],
-  css: ["bootstrap/dist/css/bootstrap.css"],
+  css: [
+    "bootstrap/dist/css/bootstrap.css",
+    "@/assets/styles/fonts.css",
+    "@/assets/styles/behavior.css",
+  ],
 });
