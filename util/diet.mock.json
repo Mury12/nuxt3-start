@@ -1,0 +1,28 @@
+{
+  "total": {
+    "carb": 60,
+    "prot": 7.5,
+    "tfat": 2.5,
+    "calories": 500,
+    "fibers": 35,
+    "sodium": 1230
+  },
+  "available": {
+    "carb": 140,
+    "prot": 192.5,
+    "tfat": 57.5,
+    "calories": 1640,
+    "fibers": 65,
+    "sodium": 670
+  },
+  "items": 2,
+  "id": 6,
+  "userId": 15,
+  "weight": 85,
+  "createdAt": "2022-10-11 23:07:02",
+  "carb": 200,
+  "prot": 200,
+  "tfat": 60,
+  "calories": 2140,
+  "act": 1
+}

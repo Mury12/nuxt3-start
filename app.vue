@@ -21,10 +21,11 @@ export default defineComponent({
   --brand-primary: rgb(138, 114, 241);
   --brand-primary-hover: rgba(138, 114, 241, 0.8);
   --brand-secondary: rgb(224, 226, 255);
-  --brand-secondary: rgba(224, 226, 255, 0.8);
+  --brand-secondary-hover: rgba(224, 226, 255, 0.8);
 }
 body {
   font-family: "Courgette", Helvetica, sans-serif;
+  color: rgb(77, 57, 57);
   background-color: var(--brand-secondary);
 }
 
@@ -34,6 +35,10 @@ body {
 .bg-brand-secondary {
   background-color: var(--brand-secondary);
 }
+.bg-brand-light {
+  background-color: var(--brand-secondary-hover);
+}
+
 .text-brand-secondary {
   color: var(--brand-secondary);
 }

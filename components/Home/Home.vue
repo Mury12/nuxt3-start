@@ -13,11 +13,10 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-
 export default defineComponent({
   setup() {
     const username = "André Mury";
-    return { username };
+    return { username, ...useDisclosure() };
   },
 });
 </script>

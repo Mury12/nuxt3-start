@@ -13,6 +13,7 @@
         {{ title }}
       </BCol>
     </BRow>
+    <slot></slot>
   </div>
 </template>
 
