@@ -47,32 +47,18 @@
       </table>
       <h6>Total de refeições: {{ diet.items }}</h6>
     </BCol>
-    <BRow :style="{ gap: '10px' }">
-      <BCol
-        v-for="(meal, idx) in meals"
-        :key="idx"
-        class="border rounded bg-brand-secondary shadow-sm pointer hover"
-      >
-        {{ meal.food.name }} - x{{ meal.stats.amount }}<br />
-        {{ meal.stats.macros.cal }}Kcal
-      </BCol>
-    </BRow>
+    <MealList :meals="meals" />
   </BRow>
 </template>
-<script lang="ts">
-import { defineComponent } from "vue";
+<script lang="ts" setup>
 import { GetDietResponse, GetMealsResponse } from "@/types";
 import dietMock from "@/util/diet.mock.json";
 import { mealsMock } from "@/util/meals.mock";
 
-export default defineComponent({
-  setup() {
-    const diet = ref<GetDietResponse>(dietMock);
-    const meals = ref<GetMealsResponse>(mealsMock);
-    return { diet, meals };
-  },
-});
+const diet = ref<GetDietResponse>(dietMock);
+const meals = ref<GetMealsResponse>(mealsMock);
 </script>
+
 <style scoped>
 .table-hover tr:hover {
   user-select: none;

@@ -1,9 +1,9 @@
 <template>
   <div class="v-modal" v-if="show" :class="isOpen ? 'fade-in' : 'fade-out'">
-    <BContainer class="d-flex justify-content-center">
+    <div class="d-flex justify-content-center px-5 --container">
       <BRow class="justify-content-center w-100">
+        <div class="backdrop" @click="$emit('close')" />
         <BCol cols="12" xl="6">
-          <div class="backdrop" @click="$emit('close')" />
           <BRow
             class="
               modal-wrapper
@@ -24,7 +24,7 @@
                 <slot name="head"></slot>
               </h3>
             </BCol>
-            <BCol cols="12" class="modal--body pb-3">
+            <BCol cols="12" class="modal--body py-3">
               <slot name="body"></slot>
             </BCol>
             <BCol
@@ -33,7 +33,10 @@
               v-if="showFooter"
             >
               <slot name="footer">
-                <BButton variant="warning" @click="$emit('close')"
+                <BButton
+                  variant="warning"
+                  @click="$emit('close')"
+                  v-if="!okOnly"
                   >Cancel</BButton
                 >
                 <BButton
@@ -47,7 +50,7 @@
           </BRow>
         </BCol>
       </BRow>
-    </BContainer>
+    </div>
   </div>
 </template>
 
@@ -64,6 +67,10 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    okOnly: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   setup() {
@@ -74,12 +81,14 @@ export default defineComponent({
 
   watch: {
     isOpen(n) {
-      setTimeout(() => {
-        this.show = n;
-      }, 200);
+      if (!n)
+        setTimeout(() => {
+          this.show = n;
+        }, 200);
+      else this.show = n;
     },
     hideFooter(n) {
-      this.showFooter = !this.hideFooter;
+      this.showFooter = !n;
     },
   },
 });
@@ -91,8 +100,8 @@ export default defineComponent({
   top: 0;
   left: 0;
   z-index: 9;
-  height: 100vh;
   width: 100vw;
+  height: 100vh;
 }
 .fade-in {
   animation: fade-in forwards 200ms;
@@ -105,15 +114,19 @@ export default defineComponent({
   top: 0;
   left: 0;
   z-index: 0;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   background-color: rgba(0, 0, 0, 0.125);
 }
 .modal-wrapper {
   position: relative;
-  height: 100%;
+  height: fit-content;
 }
-
+.--container {
+  overflow-y: auto;
+  height: 100%;
+  max-height: 100vh;
+}
 @keyframes fade-in {
   0% {
     transform: translateY(-5px);

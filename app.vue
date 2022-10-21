@@ -45,5 +45,90 @@ body {
 .text-brand-primary {
   color: var(--brand-primary);
 }
+.gap-sm {
+  gap: 0.3em;
+}
+.gap-md {
+  gap: 0.5em;
+}
+.gap-lg {
+  gap: 0.7em;
+}
+.row-gap-sm {
+  row-gap: 0.3em;
+}
+.row-gap-md {
+  row-gap: 0.5em;
+}
+.row-gap-lg {
+  row-gap: 0.7em;
+}
+.close {
+  right: 10px;
+  top: 0;
+  font-size: 1.5em;
+  color: var(--bs-secondary);
+  cursor: pointer;
+}
+/** Transitions */
+
+.inactive {
+  opacity: 0.4;
+}
+.fade-enter-actifadee,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.dig-out-enter-active {
+  transition: 0.2s ease-in-out;
+}
+.dig-out-leave-active {
+  transition: 0.2s ease-in-out;
+}
+.dig-out-leave-to {
+  transform: translateY(100%);
+  opacity: 0;
+}
+.dig-out-enter {
+  transform: translateY(-100%);
+  opacity: 0;
+}
+.slide-left-enter-active {
+  transition: 0.5s ease-in-out;
+}
+.slide-left-leave-active {
+  transition: 0.5s ease-in-out;
+}
+.slide-left-leave-to {
+  transform: translateX(20px);
+  height: 0 !important;
+  padding: 0 !important;
+  opacity: 0;
+}
+.shrink-enter-active {
+  transition: 0.5s ease-in-out;
+}
+.shrink-leave-active {
+  transition: 0.5s ease-in-out;
+}
+.shrink-leave-to {
+  height: 0 !important;
+  padding: 0 !important;
+  opacity: 0;
+}
+.shrink-enter {
+  opacity: 0;
+  height: 0 !important;
+}
+
+.default-transition {
+  transition: ease-in-out 200ms;
+}
 </style>
 

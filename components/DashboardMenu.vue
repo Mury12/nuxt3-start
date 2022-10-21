@@ -11,7 +11,7 @@
       @click="setSelected(2)"
     />
     <SquareMenuItem
-      title="Adicionar Alimento"
+      title="Adicionar Refeição"
       image="/img/alimento.png"
       @click="setSelected(3)"
     />
@@ -21,14 +21,14 @@
       @click="setSelected(4)"
     />
   </BRow>
-  <TheModal :isOpen="isOpen" @ok="onClose" @close="onClose">
+  <TheModal :is-open="isOpen" @ok="onClose" @close="onClose" ok-only>
     <template #head>
       {{ modalTitle }}
     </template>
     <template #body>
       <MyDietForm v-if="selected === 1" />
       <NewDietForm v-if="selected === 2" />
-      <AddFoodForm v-if="selected === 3" />
+      <AddMealForm v-if="selected === 3" />
       <CreateFoodForm v-if="selected === 4" />
     </template>
   </TheModal>
@@ -39,7 +39,7 @@ import { defineComponent } from "vue";
 export default defineComponent({
   setup() {
     const selected = ref(0);
-    const { isOpen, onOpen, onClose } = useDisclosure();
+    const { isOpen, toggle, onClose, onOpen } = useDisclosure();
     const modalTitle = computed(function () {
       return selected.value === 1
         ? "Minha Dieta"
@@ -51,11 +51,19 @@ export default defineComponent({
     });
 
     function setSelected(idx: number) {
-      onOpen();
+      toggle();
       this.selected = idx;
     }
 
-    return { selected, setSelected, isOpen, onOpen, onClose, modalTitle };
+    return {
+      selected,
+      setSelected,
+      isOpen,
+      toggle,
+      onClose,
+      onOpen,
+      modalTitle,
+    };
   },
 });
 </script>

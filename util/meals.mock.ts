@@ -1,13 +1,13 @@
 import { GetMealsResponse } from "~~/types";
 
-export const mealsMock = [
+export const mealsMock = <GetMealsResponse>[
   {
     stats: {
       macros: {
         carb: 36,
         prot: 4.5,
         tfat: 1.5,
-        cal: 300,
+        calories: 300,
         fiber: 1.5,
         sodium: 300,
       },
@@ -22,7 +22,7 @@ export const mealsMock = [
       tfat: 1,
       fiber: 1,
       sodium: 200,
-      cal: 200,
+      calories: 200,
       unit: "g",
     },
     id: 1,
@@ -33,7 +33,7 @@ export const mealsMock = [
         carb: 36,
         prot: 4.5,
         tfat: 1.5,
-        cal: 300,
+        calories: 300,
         fiber: 1.5,
         sodium: 300,
       },
@@ -48,7 +48,7 @@ export const mealsMock = [
       tfat: 1,
       fiber: 1,
       sodium: 200,
-      cal: 200,
+      calories: 200,
       unit: "g",
     },
     id: 2,
@@ -59,7 +59,7 @@ export const mealsMock = [
         carb: 24,
         prot: 3,
         tfat: 1,
-        cal: 200,
+        calories: 200,
         fiber: 1,
         sodium: 200,
       },
@@ -74,9 +74,9 @@ export const mealsMock = [
       tfat: 1,
       fiber: 1,
       sodium: 200,
-      cal: 200,
+      calories: 200,
       unit: "g",
     },
     id: 3,
   },
-] as GetMealsResponse;
+];
