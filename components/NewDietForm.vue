@@ -7,33 +7,33 @@
           type="text"
           name="weight"
           :value="form.weight"
-          :v-mask="['#####']"
+          :v-mask="decimalMask"
         />
         <label for="daily-kcal">Calorias ao dia</label>
-        <BFormInput type="text" name="kcal" :value="kcal" :mask="['#####']" />
+        <BFormInput type="text" name="kcal" :value="kcal" :mask="decimalMask" />
         <label for="daily-carb">Carboidratos</label>
         <BFormInput
           type="text"
           name="carb"
           :value="form.carb"
-          :v-mask="['#####']"
+          :v-mask="decimalMask"
         />
         <label for="daily-prot">Proteinas</label>
         <BFormInput
           type="text"
           name="prot"
           :value="form.prot"
-          :v-mask="['#####']"
+          :v-mask="decimalMask"
         />
         <label for="daily-tfat">Gorduras</label>
         <BFormInput
           type="text"
           name="tfat"
           :value="form.tfat"
-          :v-mask="['#####']"
+          :v-mask="decimalMask"
         />
         <div class="text-end w-100">
-          <BButton type="submit" variant="success" class="mt-3">Salvar</BButton>
+          <BButton type="submit" class="mt-3">Salvar</BButton>
         </div>
       </form>
     </BCol>
@@ -60,27 +60,21 @@
     </BCol>
   </BRow>
 </template>
-<script lang="ts">
-import { defineComponent } from "vue";
+<script lang="ts" setup>
 import { Diet } from "@/types";
+import { decimalMask } from "@/util/decimal-mask";
 
-export default defineComponent({
-  setup() {
-    const kcal = ref(0);
-    const form = ref<Diet>({
-      carb: 0,
-      prot: 0,
-      tfat: 0,
-      weight: 0,
-    });
-
-    function send() {
-      console.log(form);
-    }
-
-    return { form, kcal, send };
-  },
+const kcal = ref(0);
+const form = ref<Diet>({
+  carb: 0,
+  prot: 0,
+  tfat: 0,
+  weight: 0,
 });
+
+function send() {
+  console.log(form);
+}
 </script>
 
 <style scoped>

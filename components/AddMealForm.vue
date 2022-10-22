@@ -1,10 +1,10 @@
 <template>
   <BRow>
-    <BCol cols="8" class="d-flex align-items-center">
+    <BCol cols="12" md="8" class="d-flex align-items-center border-end">
       <form class="form-control">
-        <div class="food-list my-3">
+        <div class="food-list d-flex flex-wrap gap-lg">
           <div
-            class="food py-3 position-relative"
+            class="food pb-3 position-relative"
             v-for="(food, idx) in selectedFoods"
             :key="idx"
           >
@@ -16,7 +16,8 @@
             </div>
             {{ food.name }}<br />
             <input
-              v-mask="['#####']"
+              v-mask="decimalMask"
+              placeholder="10.00"
               type="text"
               required
               min="0"
@@ -24,8 +25,8 @@
               class="rounded border"
             />
             {{ food.unit }}
-            <span class="text-secondary"
-              >(1 porção = {{ food.weight }} {{ food.unit }}) </span
+            <span class="text-secondary">
+              (1 porção = {{ food.weight }} {{ food.unit }}) </span
             ><br />
             <div class="macro-wrap d-flex flex-wrap gap-sm mt-2">
               <MacroHint :macros="getFoodMacros(food.id)[1]" />
@@ -33,18 +34,21 @@
           </div>
         </div>
         <DynamicSelector
+          title="Selecione um alimento"
+          class="mt-3"
           :options="foods"
           :fields="fields"
-          title="Selecione um alimento"
           :selected="selected"
           @select="setSelected"
           @remove="removeSelected"
           ><PlusButton>Adicionar Alimento</PlusButton></DynamicSelector
         >
-        <BButton variant="success" v-if="selected.length">Salvar</BButton>
+        <div class="w-100 text-end">
+          <BButton variant="success" v-if="selected.length">Salvar</BButton>
+        </div>
       </form>
     </BCol>
-    <BCol cols="4">
+    <BCol cols="12" md="4">
       <BRow>
         <BCol cols="12">
           Sumário<br />---<br />
@@ -62,6 +66,7 @@
  
 <script lang="ts" setup>
 import { getDietAfterMeal } from "@/util/get-diet-result";
+import { decimalMask } from "@/util/decimal-mask";
 
 import {
   DynamicSelectorField,
@@ -240,14 +245,14 @@ function setSelected(foodId) {
 </script>
 <style scoped>
 .food {
-  border-bottom: 1px dashed var(--bs-secondary);
+  border-bottom: 1px dashed var(--bs-border-color);
 }
 
 .form-control {
   border: none !important;
 }
 input[type="text"] {
-  width: 5ch;
+  width: 8ch;
 }
 .remove-item {
   left: -25px;

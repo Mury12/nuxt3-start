@@ -3,7 +3,7 @@
     <div class="d-flex justify-content-center px-5 --container">
       <BRow class="justify-content-center w-100">
         <div class="backdrop" @click="$emit('close')" />
-        <BCol cols="12" xl="6">
+        <BCol cols="12" xl="6" class="pb-3">
           <BRow
             class="
               modal-wrapper
@@ -20,6 +20,7 @@
             "
           >
             <BCol cols="12" class="modal--header border-bottom pb-3">
+              <CloseButton @click="$emit('close')" />
               <h3>
                 <slot name="head"></slot>
               </h3>
@@ -54,43 +55,28 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
+<script lang="ts" setup>
+const props = defineProps<{
+  hideFooter?: boolean;
+  okOnly?: boolean;
+  isOpen: boolean;
+}>();
 
-export default defineComponent({
-  props: {
-    isOpen: {
-      type: Boolean,
-      default: false,
-    },
-    hideFooter: {
-      type: Boolean,
-      default: false,
-    },
-    okOnly: {
-      type: Boolean,
-      default: false,
-    },
-  },
+const { hideFooter, okOnly, isOpen } = toRefs(props);
 
-  setup() {
-    const show = ref(false);
-    const showFooter = true;
-    return { show, showFooter };
-  },
+const show = ref(false);
+const showFooter = ref(true);
 
-  watch: {
-    isOpen(n) {
-      if (!n)
-        setTimeout(() => {
-          this.show = n;
-        }, 200);
-      else this.show = n;
-    },
-    hideFooter(n) {
-      this.showFooter = !n;
-    },
-  },
+onMounted(() => {
+  showFooter.value = !hideFooter;
+});
+
+watch(isOpen, (n) => {
+  if (!n)
+    setTimeout(() => {
+      show.value = n;
+    }, 200);
+  else show.value = n;
 });
 </script>
 

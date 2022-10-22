@@ -63,72 +63,38 @@ body {
 .row-gap-lg {
   row-gap: 0.7em;
 }
-.close {
-  right: 10px;
-  top: 0;
-  font-size: 1.5em;
-  color: var(--bs-secondary);
-  cursor: pointer;
-}
+
 /** Transitions */
 
 .inactive {
   opacity: 0.4;
 }
-.fade-enter-actifadee,
+.fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.5s ease;
+  transition: opacity 0.25s ease !important;
 }
 
 .fade-enter-from,
 .fade-leave-to {
-  opacity: 0;
+  opacity: 0 !important;
 }
 
 .dig-out-enter-active {
-  transition: 0.2s ease-in-out;
+  transition: 0.2s ease-in-out !important;
 }
 .dig-out-leave-active {
-  transition: 0.2s ease-in-out;
+  transition: 0.2s ease-in-out !important;
 }
 .dig-out-leave-to {
-  transform: translateY(100%);
-  opacity: 0;
+  transform: translateY(100%) !important;
+  opacity: 0 !important;
 }
-.dig-out-enter {
-  transform: translateY(-100%);
-  opacity: 0;
+.dig-out-enter-from {
+  transform: translateY(-100%) !important;
+  opacity: 0 !important;
 }
-.slide-left-enter-active {
-  transition: 0.5s ease-in-out;
-}
-.slide-left-leave-active {
-  transition: 0.5s ease-in-out;
-}
-.slide-left-leave-to {
-  transform: translateX(20px);
-  height: 0 !important;
-  padding: 0 !important;
-  opacity: 0;
-}
-.shrink-enter-active {
-  transition: 0.5s ease-in-out;
-}
-.shrink-leave-active {
-  transition: 0.5s ease-in-out;
-}
-.shrink-leave-to {
-  height: 0 !important;
-  padding: 0 !important;
-  opacity: 0;
-}
-.shrink-enter {
-  opacity: 0;
-  height: 0 !important;
-}
-
 .default-transition {
-  transition: ease-in-out 200ms;
+  transition: ease-in-out 200ms !important;
 }
 
 .badge {

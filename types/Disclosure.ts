@@ -4,5 +4,5 @@ export interface Disclosure {
   onOpen: () => void;
   onClose: () => void;
   toggle: () => void;
-  isOpen: Ref<Boolean>;
+  isOpen: Ref<boolean>;
 }

@@ -21,7 +21,7 @@
       @click="setSelected(4)"
     />
   </BRow>
-  <TheModal :is-open="isOpen" @ok="onClose" @close="onClose" ok-only>
+  <TheModal :is-open="isOpen" @ok="onClose" @close="onClose" hide-footer>
     <template #head>
       {{ modalTitle }}
     </template>

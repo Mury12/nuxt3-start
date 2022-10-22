@@ -12,7 +12,7 @@
         class="border rounded px-3"
       >
         <small
-          >{{ info.label }} {{ item[info.key] }}{{ info.suffix || "" }}</small
+          >{{ info.label }}: {{ item[info.key] }}{{ info.suffix || "" }}</small
         >
       </div>
     </div>
@@ -35,5 +35,9 @@ const { active, fields } = defineProps<{
 .option {
   box-sizing: border-box;
   border: 1px solid transparent;
+}
+.active {
+  /* background-color: var(--brand-secondary) !important; */
+  border: 1px solid var(--brand-primary-hover);
 }
 </style>

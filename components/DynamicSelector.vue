@@ -12,9 +12,8 @@
         v-if="isOpen"
         :key="String(isOpen)"
       >
-        <div class="position-absolute close default-transition" @click="toggle">
-          &times;
-        </div>
+        <CloseButton @click="toggle" />
+
         <div class="pb-3 pt-2">
           <h5>{{ title }}</h5>
           <input v-model="search" />
@@ -75,7 +74,6 @@ const setShowing = (array?: typeof options) => {
     showing.value.push(
       ...toGet.slice(perPage * currentPage.value, perPage + la)
     );
-    console.log(perPage * currentPage.value, perPage, currentPage.value);
     currentPage.value++;
   }
 };
@@ -103,14 +101,13 @@ function filter() {
 }
 
 watch(filtered, (n) => {
-  console.log(filtered.value.map((v) => v));
   showing.value = [];
   currentPage.value = 0;
   setShowing(n);
 });
 
 watch(search, (n) => {
-  if (n.length) debounce(filter, 500);
+  if (n.length) debounce(filter, 50);
   else filtered.value = sort(options);
 });
 
@@ -153,15 +150,7 @@ function emitOption(idx: number) {
   display: initial;
 }
 
-.active {
-  background-color: var(--brand-secondary) !important;
-  border: 1px solid var(--brand-primary-hover);
-}
 .option-item {
   height: fit-content;
-}
-
-.close:hover {
-  color: black;
 }
 </style>
