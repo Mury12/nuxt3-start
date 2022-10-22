@@ -2,7 +2,7 @@
   <div class="v-modal" v-if="show" :class="isOpen ? 'fade-in' : 'fade-out'">
     <div class="d-flex justify-content-center px-5 --container">
       <BRow class="justify-content-center w-100">
-        <div class="backdrop" @click="$emit('close')" />
+        <div class="backdrop" @click="emit('close')" />
         <BCol cols="12" xl="6" class="pb-3">
           <BRow
             class="
@@ -20,7 +20,7 @@
             "
           >
             <BCol cols="12" class="modal--header border-bottom pb-3">
-              <CloseButton @click="$emit('close')" />
+              <CloseButton @click="emit('close')" />
               <h3>
                 <slot name="head"></slot>
               </h3>
@@ -34,15 +34,12 @@
               v-if="showFooter"
             >
               <slot name="footer">
-                <BButton
-                  variant="warning"
-                  @click="$emit('close')"
-                  v-if="!okOnly"
+                <BButton variant="warning" @click="emit('close')" v-if="!okOnly"
                   >Cancel</BButton
                 >
                 <BButton
                   variant="success"
-                  @click="$emit('ok')"
+                  @click="emit('ok')"
                   :style="{ marginLeft: '0.5em' }"
                   >Ok</BButton
                 >
@@ -60,6 +57,11 @@ const props = defineProps<{
   hideFooter?: boolean;
   okOnly?: boolean;
   isOpen: boolean;
+}>();
+
+const emit = defineEmits<{
+  (e: "close"): void;
+  (e: "ok"): void;
 }>();
 
 const { hideFooter, okOnly, isOpen } = toRefs(props);

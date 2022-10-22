@@ -1,7 +1,9 @@
 <template>
-  <NuxtLayout :name="layout" :key="layout">
-    <NuxtPage />
-  </NuxtLayout>
+  <transition name="fade" mode="out-in">
+    <NuxtLayout :name="layout" :key="layout">
+      <NuxtPage />
+    </NuxtLayout>
+  </transition>
 </template>
 
 <script lang="ts">
