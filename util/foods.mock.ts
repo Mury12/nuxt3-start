@@ -1,6 +1,6 @@
 import { GetFoodsResponse } from "~~/types";
 
-export default <GetFoodsResponse>[
+export const foodsMock = <GetFoodsResponse>[
   {
     id: 1,
     name: "Pão de forma Integral Wikibold",

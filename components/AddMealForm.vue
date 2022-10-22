@@ -73,11 +73,9 @@ import {
 } from "~~/types";
 
 const diet = useComputedDiet();
-const foodList = useComputedFoods();
+const foods = useComputedFoods();
 
 const selected = ref<number[]>([]);
-const foods = ref<GetFoodsResponse>(foodList.value);
-
 const mealContent = ref<Meal[]>([]);
 
 const selectedFoods = computed(() =>

@@ -6,7 +6,7 @@ import {
 } from "@/types";
 
 import dietMock from "@/util/diet.mock.json";
-import foodsMock from "~~/util/foods.mock";
+import { foodsMock } from "~~/util/foods.mock";
 import { mealsMock } from "~~/util/meals.mock";
 import { userMock } from "~~/util/user.mock";
 
@@ -22,6 +22,6 @@ export const useComputedFoods = () =>
   useState("foods", (): GetFoodsResponse => foodsMock);
 
 export const useComputedMeals = () =>
-  useState("foods", (): GetMealsResponse => mealsMock);
+  useState("meals", (): GetMealsResponse => mealsMock);
 
 export const useComputedUser = () => useState("user", (): User => userMock);
