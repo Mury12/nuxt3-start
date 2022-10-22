@@ -1,7 +1,7 @@
 import { Macro } from "./Macro";
 
 export interface Food extends Macro {
-  id: number;
+  id?: number;
   name: string;
   weight: number;
   unit: string;

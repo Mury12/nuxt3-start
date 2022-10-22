@@ -6,31 +6,36 @@
         <BFormInput
           type="text"
           name="weight"
-          :value="form.weight"
-          :v-mask="decimalMask"
+          :v-model="form.weight"
+          v-mask="decimalMask"
         />
         <label for="daily-kcal">Calorias ao dia</label>
-        <BFormInput type="text" name="kcal" :value="kcal" :mask="decimalMask" />
+        <BFormInput
+          type="text"
+          name="kcal"
+          :v-model="kcal"
+          v-mask="decimalMask"
+        />
         <label for="daily-carb">Carboidratos</label>
         <BFormInput
           type="text"
           name="carb"
-          :value="form.carb"
-          :v-mask="decimalMask"
+          :v-model="form.carb"
+          v-mask="decimalMask"
         />
         <label for="daily-prot">Proteinas</label>
         <BFormInput
           type="text"
           name="prot"
-          :value="form.prot"
-          :v-mask="decimalMask"
+          :v-model="form.prot"
+          v-mask="decimalMask"
         />
         <label for="daily-tfat">Gorduras</label>
         <BFormInput
           type="text"
           name="tfat"
-          :value="form.tfat"
-          :v-mask="decimalMask"
+          :v-model="form.tfat"
+          v-mask="decimalMask"
         />
         <div class="text-end w-100">
           <BButton type="submit" class="mt-3">Salvar</BButton>
