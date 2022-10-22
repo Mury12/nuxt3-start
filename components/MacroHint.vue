@@ -1,12 +1,11 @@
 <template>
-  <BBadge
-    v-for="(macro, macroIdx) in macros"
-    :key="macroIdx"
-    variant="light"
-    class="border"
-  >
-    {{ macro.name }}: {{ macro.value }}{{ macro.measure }}
-  </BBadge>
+  <div class="d-flex flex-wrap gap-sm">
+    <MacroHintSingle
+      v-for="(macro, macroIdx) in macros"
+      :key="macroIdx"
+      :macro="macro"
+    />
+  </div>
 </template>
 
 <script setup lang="ts">

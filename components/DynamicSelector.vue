@@ -1,6 +1,10 @@
 <template>
   <div class="selector-wrapper d-flex justify-content-around">
-    <PlusButton @click="toggle">Adicionar Alimento</PlusButton>
+    <div @click="toggle">
+      <slot>
+        <BButton variant="outline-info">Select an Item</BButton>
+      </slot>
+    </div>
     <transition name="fade" mode="out-in">
       <div
         class="options-wrap py-3 px-4 rounded shadow bg-white"
@@ -22,7 +26,7 @@
             v-for="(item, index) in showing"
             :key="index"
           >
-            <FoodItem
+            <DynamicSelectItem
               @click="emitOption(item.id)"
               :active="selected.includes(item.id)"
               :item="item"

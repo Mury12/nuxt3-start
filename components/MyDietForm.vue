@@ -51,12 +51,10 @@
   </BRow>
 </template>
 <script lang="ts" setup>
-import { GetDietResponse, GetMealsResponse } from "@/types";
-import dietMock from "@/util/diet.mock.json";
-import { mealsMock } from "@/util/meals.mock";
+import { GetMealsResponse } from "@/types";
 
-const diet = ref<GetDietResponse>(dietMock);
-const meals = ref<GetMealsResponse>(mealsMock);
+const diet = useComputedDiet();
+const meals = useComputedMeals();
 </script>
 
 <style scoped>

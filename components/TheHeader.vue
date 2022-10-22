@@ -18,30 +18,25 @@
             text-primary
           "
         >
-          A
+          {{ userFirstLetter }}
         </div>
       </BCol>
     </BRow>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
+<script lang="ts" setup>
+const layout = useLayout();
+const user = useComputedUser();
+const userFirstLetter = computed(() => user.value.name.charAt(0).toUpperCase());
 
-export default defineComponent({
-  setup() {
-    const layout = useLayout();
-
-    const btnClass = computed(() => {
-      return layout.value === "custom" ? "danger" : "info";
-    });
-
-    function toggleLayout() {
-      layout.value = layout.value === "custom" ? "default" : "custom";
-    }
-    return { layout, btnClass, toggleLayout };
-  },
+const btnClass = computed(() => {
+  return layout.value === "custom" ? "danger" : "info";
 });
+
+function toggleLayout() {
+  layout.value = layout.value === "custom" ? "default" : "custom";
+}
 </script>
 
 <style scoped>
@@ -50,7 +45,7 @@ export default defineComponent({
   width: 50px;
   border-radius: 50%;
   font-size: 2em;
-  font-family: 'Courier New', Courier, monospace;
+  font-family: "Courier New", Courier, monospace;
 }
 .header {
   width: 100%;

@@ -130,5 +130,10 @@ body {
 .default-transition {
   transition: ease-in-out 200ms;
 }
+
+.badge {
+  font-weight: lighter;
+  font-size: 0.8em;
+}
 </style>
 

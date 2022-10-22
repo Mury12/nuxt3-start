@@ -1,29 +1,27 @@
-import { Disclosure } from "@/types";
+import {
+  GetDietResponse,
+  GetFoodsResponse,
+  GetMealsResponse,
+  User,
+} from "@/types";
+
+import dietMock from "@/util/diet.mock.json";
+import foodsMock from "~~/util/foods.mock";
+import { mealsMock } from "~~/util/meals.mock";
+import { userMock } from "~~/util/user.mock";
 
 export const useCounter = () => useState<number>("counter", () => 0);
 
 export const useLayout = () =>
   useState<"default" | "custom">("layout", () => "default");
 
-export const useDisclosure = (): Disclosure => {
-  const isOpen = useState(`isOpen_${Math.random()}`, () => false);
+export const useComputedDiet = () =>
+  useState("diet", (): GetDietResponse => dietMock);
 
-  const onOpen = () => {
-    isOpen.value = true;
-  };
+export const useComputedFoods = () =>
+  useState("foods", (): GetFoodsResponse => foodsMock);
 
-  const onClose = () => {
-    isOpen.value = false;
-  };
+export const useComputedMeals = () =>
+  useState("foods", (): GetMealsResponse => mealsMock);
 
-  const toggle = () => {
-    isOpen.value = isOpen.value ? false : true;
-  };
-
-  return {
-    isOpen,
-    onOpen,
-    onClose,
-    toggle,
-  };
-};
+export const useComputedUser = () => useState("user", (): User => userMock);

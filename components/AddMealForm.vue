@@ -1,6 +1,6 @@
 <template>
   <BRow>
-    <BCol cols="8">
+    <BCol cols="8" class="d-flex align-items-center">
       <form class="form-control">
         <div class="food-list my-3">
           <div
@@ -28,14 +28,7 @@
               >(1 porção = {{ food.weight }} {{ food.unit }}) </span
             ><br />
             <div class="macro-wrap d-flex flex-wrap gap-sm mt-2">
-              <BBadge
-                v-for="(macro, macroIdx) in getFoodMacros(food.id)[1]"
-                :key="macroIdx"
-                variant="light"
-                class="border"
-              >
-                {{ macro.name }}: {{ macro.value }}{{ macro.measure }}
-              </BBadge>
+              <MacroHint :macros="getFoodMacros(food.id)[1]" />
             </div>
           </div>
         </div>
@@ -46,7 +39,8 @@
           :selected="selected"
           @select="setSelected"
           @remove="removeSelected"
-        />
+          ><PlusButton>Adicionar Alimento</PlusButton></DynamicSelector
+        >
         <BButton variant="success" v-if="selected.length">Salvar</BButton>
       </form>
     </BCol>
@@ -58,7 +52,7 @@
           <MacroHint :macros="totalMacros" />
         </BCol>
         <BCol cols="12" class="border-top mt-3 pt-2">
-          Macros resultantes<br />
+          Macros restantes com essa refeição:<br />
           <MacroHint :macros="postAvailableDiet" />
         </BCol>
       </BRow>
@@ -67,8 +61,6 @@
 </template>
  
 <script lang="ts" setup>
-import foodsMock from "@/util/foods.mock";
-import dietMock from "@/util/diet.mock.json";
 import { getDietAfterMeal } from "@/util/get-diet-result";
 
 import {
@@ -80,8 +72,11 @@ import {
   Meal,
 } from "~~/types";
 
+const diet = useComputedDiet();
+const foodList = useComputedFoods();
+
 const selected = ref<number[]>([]);
-const foods = ref<GetFoodsResponse>(foodsMock);
+const foods = ref<GetFoodsResponse>(foodList.value);
 
 const mealContent = ref<Meal[]>([]);
 
@@ -108,7 +103,7 @@ const postAvailableDiet = computed(() => {
     });
     return acc;
   }, obj);
-  return getDietAfterMeal(dietMock.available, foodMacros);
+  return getDietAfterMeal(diet.value.available, foodMacros);
 });
 
 const totalMacros = computed(() => {
@@ -249,9 +244,7 @@ function setSelected(foodId) {
 .food {
   border-bottom: 1px dashed var(--bs-secondary);
 }
-.food:last-of-type {
-  border: none;
-}
+
 .form-control {
   border: none !important;
 }
