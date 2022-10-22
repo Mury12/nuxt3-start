@@ -12,3 +12,9 @@ export interface MacroField {
   value: number;
   measure?: "g" | "mg";
 }
+
+export enum MacroMultiplier {
+  "carbohydrates" = 4,
+  "protein" = 4,
+  "fat" = 9,
+}

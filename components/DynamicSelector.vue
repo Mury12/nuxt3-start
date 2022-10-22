@@ -46,10 +46,11 @@
 import { DynamicSelectorField } from "~~/types";
 import { debounce } from "@/util/debounce";
 
-const { options, fields, title } = defineProps<{
+const { options, fields, title, selected } = defineProps<{
   options: any[];
   fields: DynamicSelectorField<any>;
   title: string;
+  selected: number[];
 }>();
 function sort(opts: typeof options) {
   return opts.sort((a, b) => (a[fields.label] < b[fields.label] ? -1 : 1));
@@ -59,7 +60,6 @@ const { isOpen, toggle } = useDisclosure();
 
 const search = ref<string>("");
 const filtered = ref<typeof options>(sort(options));
-const selected = ref<number[]>([]);
 const showing = ref<typeof options>([]);
 const currentPage = ref(0);
 const perPage = 10;
@@ -116,13 +116,11 @@ const emit = defineEmits<{
 }>();
 
 function emitOption(idx: number) {
-  const hasIdx = selected.value.indexOf(idx);
+  const hasIdx = selected.indexOf(idx);
   if (~hasIdx) {
     emit("remove", idx);
-    selected.value.splice(hasIdx, 1);
   } else {
     emit("select", idx);
-    selected.value.push(idx);
   }
 }
 </script>

@@ -4,13 +4,20 @@
       <form class="form-control">
         <div class="food-list my-3">
           <div
-            class="food py-3"
+            class="food py-3 position-relative"
             v-for="(food, idx) in selectedFoods"
             :key="idx"
           >
+            <div
+              class="remove-item position-absolute text-danger hover pointer"
+              @click="removeSelected(food.id)"
+            >
+              <FaIcon icon="trash" />
+            </div>
             {{ food.name }}<br />
             <input
-              type="number"
+              v-mask="['#####']"
+              type="text"
               required
               min="0"
               @input="setMealContent(idx, $event)"
@@ -22,7 +29,7 @@
             ><br />
             <div class="macro-wrap d-flex flex-wrap gap-sm mt-2">
               <BBadge
-                v-for="(macro, macroIdx) in getFoodMacros(food.id)"
+                v-for="(macro, macroIdx) in getFoodMacros(food.id)[1]"
                 :key="macroIdx"
                 variant="light"
                 class="border"
@@ -36,6 +43,7 @@
           :options="foods"
           :fields="fields"
           title="Selecione um alimento"
+          :selected="selected"
           @select="setSelected"
           @remove="removeSelected"
         />
@@ -43,21 +51,30 @@
       </form>
     </BCol>
     <BCol cols="4">
-      Sumário<br />---<br />
-      Itens: {{ selected.length }} <br />
-      <MacroHint :macros="totalMacros" />
+      <BRow>
+        <BCol cols="12">
+          Sumário<br />---<br />
+          Itens: {{ selected.length }} <br />
+          <MacroHint :macros="totalMacros" />
+        </BCol>
+        <BCol cols="12" class="border-top mt-3 pt-2">
+          Macros resultantes<br />
+          <MacroHint :macros="postAvailableDiet" />
+        </BCol>
+      </BRow>
     </BCol>
   </BRow>
 </template>
  
 <script lang="ts" setup>
 import foodsMock from "@/util/foods.mock";
+import dietMock from "@/util/diet.mock.json";
+import { getDietAfterMeal } from "@/util/get-diet-result";
 
 import {
   DynamicSelectorField,
   Food,
   GetFoodsResponse,
-  GetMealsResponse,
   Macro,
   MacroField,
   Meal,
@@ -75,10 +92,29 @@ const selectedFoods = computed(() =>
   })
 );
 
+const postAvailableDiet = computed(() => {
+  const obj: Macro = {
+    carb: 0,
+    calories: 0,
+    fiber: 0,
+    prot: 0,
+    sodium: 0,
+    tfat: 0,
+  };
+  const foodMacros: Macro = selectedFoods.value.reduce((acc, food) => {
+    Object.keys(obj).forEach((key: keyof Macro) => {
+      acc[key] += getFoodMacros(food.id)[0][key];
+      return acc;
+    });
+    return acc;
+  }, obj);
+  return getDietAfterMeal(dietMock.available, foodMacros);
+});
+
 const totalMacros = computed(() => {
   const result: Record<string, MacroField> = selectedFoods.value.reduce(
     (acc, food) => {
-      const macros = getFoodMacros(food.id);
+      const [, macros] = getFoodMacros(food.id);
       macros.forEach((macro) => {
         if (!acc[macro.name]) acc[macro.name] = { ...macro };
         else acc[macro.name].value += macro.value;
@@ -140,8 +176,9 @@ function setMealContent(idx: number, e) {
   mealContent.value[idx].qtd = e.target.value;
 }
 
-function getFoodMacros(id: number): MacroField[] {
-  const macros = <MacroField[]>[];
+function getFoodMacros(id: number): [Macro, MacroField[]] {
+  const macroFields = <MacroField[]>[];
+
   const foodIdx = foods.value.findIndex((food) => food.id === id);
   const { calories, carb, fiber, prot, tfat, weight, sodium } =
     foods.value[foodIdx];
@@ -151,39 +188,47 @@ function getFoodMacros(id: number): MacroField[] {
   );
   const amount = mealContent.value[mealContentIdx].qtd;
   const radix = amount / weight;
-  macros.push(
+  const macrosObj: Macro = {
+    calories: Math.round(radix * calories),
+    carb: Math.round(radix * carb),
+    prot: Math.round(radix * prot),
+    tfat: Math.round(radix * tfat),
+    sodium: Math.round(radix * sodium),
+    fiber: Math.round(radix * fiber),
+  };
+  macroFields.push(
     {
       name: "Calorias",
-      value: Math.round(radix * calories),
+      value: macrosObj.calories,
     },
     {
       name: "Carboidratos",
-      value: Math.round(radix * carb),
+      value: macrosObj.carb,
       measure: "g",
     },
     {
       name: "Proteinas",
-      value: Math.round(radix * prot),
+      value: macrosObj.prot,
       measure: "g",
     },
     {
       name: "Gorduras",
-      value: Math.round(radix * tfat),
+      value: macrosObj.tfat,
       measure: "g",
     },
     {
       name: "Sódio",
-      value: Math.round(radix * sodium),
+      value: macrosObj.sodium,
       measure: "mg",
     },
     {
       name: "Fibras",
-      value: Math.round(radix * fiber),
+      value: macrosObj.fiber,
       measure: "g",
     }
   );
 
-  return macros;
+  return [macrosObj, macroFields];
 }
 
 function removeSelected(foodId) {
@@ -210,7 +255,11 @@ function setSelected(foodId) {
 .form-control {
   border: none !important;
 }
-input[type="number"] {
-  width: 8ch;
+input[type="text"] {
+  width: 5ch;
+}
+.remove-item {
+  left: -25px;
+  top: 50%;
 }
 </style>

@@ -12,10 +12,20 @@ export default defineNuxtConfig({
       },
     },
   },
+  plugins: [
+    { src: "@/plugin/font-awesome.ts", mode: "client" },
+    { src: "@/plugin/vue-the-mask.ts", mode: "client" },
+  ],
   modules: ["bootstrap-vue-3/nuxt"],
   css: [
     "bootstrap/dist/css/bootstrap.css",
     "@/assets/styles/fonts.css",
     "@/assets/styles/behavior.css",
   ],
+  build: {
+    transpile: [
+      "@fortawesome/fontawesome-svg-core",
+      "@fortawesome/free-solid-svg-icons",
+    ],
+  },
 });
