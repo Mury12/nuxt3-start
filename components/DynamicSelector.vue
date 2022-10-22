@@ -19,7 +19,7 @@
           <h5>{{ title }}</h5>
           <input v-model="search" />
         </div>
-        <BRow class="row-gap-md options-body" @scroll="listenScroll">
+        <BRow class="row-gap-md options-body" @scroll="onScrollLoadMore">
           <BCol
             class="option-item"
             cols="12"
@@ -80,7 +80,7 @@ const setShowing = (array?: typeof options) => {
   }
 };
 
-function listenScroll(e) {
+function onScrollLoadMore(e) {
   const { scrollTop, scrollHeight } = e.target;
   const threshold = scrollHeight - scrollHeight / 4;
   if (scrollTop >= threshold) {
