@@ -93,6 +93,9 @@
 import { Food } from "~~/types";
 import { decimalMask } from "@/util/decimal-mask";
 import { getMacrosCalories } from "~~/util/get-macros-calories";
+import { apiClient } from "~~/util/ApiClient";
+
+const foods = useComputedFoods();
 
 const form = ref<Food>({
   name: "",
@@ -103,7 +106,7 @@ const form = ref<Food>({
   fiber: undefined,
   sodium: undefined,
   weight: undefined,
-  unit: "",
+  unit: "g",
 });
 
 const kcal = ref(0);
@@ -120,7 +123,12 @@ watch(
   { deep: true }
 );
 
-function send() {
-  return;
+async function send() {
+  const result = await apiClient.createFood(form.value);
+  console.log("create food", result);
+  foods.value.push({
+    ...form.value,
+    id: result.id,
+  });
 }
 </script>

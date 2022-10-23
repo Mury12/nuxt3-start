@@ -1,38 +1,16 @@
-import { DietStats, Macro, MacroField } from "~~/types";
+import { Diet, Macro, MacroField } from "~~/types";
+import { macroToMacroField } from "./macro-to-macro-field";
 
 export function getDietAfterMeal(
-  diet: DietStats,
+  diet: Macro,
   totalMacros: Macro
 ): MacroField[] {
-  return <MacroField[]>[
-    {
-      name: "Calorias",
-      value: diet.calories - totalMacros.calories,
-    },
-    {
-      name: "Carboidratos",
-      value: diet.carb - totalMacros.carb,
-      measure: "g",
-    },
-    {
-      name: "Proteinas",
-      value: diet.prot - totalMacros.prot,
-      measure: "g",
-    },
-    {
-      name: "Gorduras",
-      value: diet.tfat - totalMacros.tfat,
-      measure: "g",
-    },
-    {
-      name: "Sódio",
-      value: diet.sodium - totalMacros.sodium,
-      measure: "mg",
-    },
-    {
-      name: "Fibras",
-      value: diet.fibers - totalMacros.fiber,
-      measure: "g",
-    },
-  ];
+  return macroToMacroField({
+    calories: diet.calories - totalMacros.calories,
+    carb: diet.carb - totalMacros.carb,
+    prot: diet.prot - totalMacros.prot,
+    tfat: diet.tfat - totalMacros.tfat,
+    fiber: diet.sodium - totalMacros.sodium,
+    sodium: diet.fiber - totalMacros.fiber,
+  });
 }

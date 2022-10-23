@@ -206,7 +206,7 @@ async function send() {
     prot: prot.value,
     tfat: tfat.value,
   });
-  console.debug(result);
+  console.debug("create diet", result);
 }
 </script>
 

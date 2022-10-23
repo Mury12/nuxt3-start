@@ -1,7 +1,7 @@
 <template>
   <BRow>
     <BCol cols="12" md="8" class="d-flex align-items-center border-end">
-      <form class="form-control">
+      <form class="form-control" @submit.prevent="send">
         <div class="food-list d-flex flex-wrap gap-lg">
           <div
             class="food pb-3 position-relative"
@@ -39,12 +39,15 @@
           :options="foods"
           :fields="fields"
           :selected="selected"
+          :key="foods.length"
           @select="setSelected"
           @remove="removeSelected"
           ><PlusButton>Adicionar Alimento</PlusButton></DynamicSelector
         >
         <div class="w-100 text-end">
-          <BButton variant="success" v-if="selected.length">Salvar</BButton>
+          <BButton variant="success" type="submit" v-if="selected.length"
+            >Salvar</BButton
+          >
         </div>
       </form>
     </BCol>
@@ -76,9 +79,11 @@ import {
   MacroField,
   Meal,
 } from "~~/types";
+import { apiClient } from "~~/util/ApiClient";
 
 const diet = useComputedDiet();
 const foods = useComputedFoods();
+const meals = useComputedMeals();
 
 const selected = ref<number[]>([]);
 const mealContent = ref<Meal[]>([]);
@@ -242,6 +247,34 @@ function setSelected(foodId) {
     qtd: 0,
   });
 }
+function cleanForm() {
+  selected.value.splice(0, -1);
+  mealContent.value.splice(0, -1);
+  selectedFoods.value.splice(0, -1);
+}
+
+async function send() {
+  const result = await apiClient.createMeal(mealContent.value);
+  console.log("Meal create", result);
+  cleanForm();
+
+  const updatedDiet = await apiClient.fetchDietStats(diet.value.id);
+  diet.value = updatedDiet;
+
+  const updatedMeals = await apiClient.fetchTodayMeals();
+  meals.value = updatedMeals;
+}
+
+async function fetchFoods() {
+  const result = await apiClient.fetchFoods();
+  foods.value = result;
+}
+
+onMounted(() => {
+  nextTick(() => {
+    fetchFoods();
+  });
+});
 </script>
 <style scoped>
 .food {
