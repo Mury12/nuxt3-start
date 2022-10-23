@@ -137,10 +137,11 @@ import {
   MacroMultiplier,
 } from "@/types";
 import { decimalMask } from "@/util/decimal-mask";
+import { assertOptionalCallExpression } from "@babel/types";
+import { apiClient } from "~~/util/ApiClient";
 import { getMacrosCalories } from "~~/util/get-macros-calories";
 
 const strategy = ref<DietGenStrategy>("weight");
-
 const kcal = ref(0);
 const carb = ref(0);
 const prot = ref(0);
@@ -198,8 +199,14 @@ watch([goalWeight, goal], () => {
   }
 });
 
-function send() {
-  console.log("form");
+async function send() {
+  const result = await apiClient.createDiet({
+    weight: weight.value,
+    carb: carb.value,
+    prot: prot.value,
+    tfat: tfat.value,
+  });
+  console.debug(result);
 }
 </script>
 

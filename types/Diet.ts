@@ -1,6 +1,7 @@
 import { Macro } from "./Macro";
 
 export interface Diet extends Macro {
+  id?: number;
   weight: number;
   createdAt?: Date;
   act?: 0 | 1;

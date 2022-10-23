@@ -51,6 +51,7 @@ const modalTitle = computed(function () {
 });
 
 const user = useComputedUser();
+const diet = useComputedDiet();
 
 function setSelected(idx: number) {
   toggle();
@@ -68,9 +69,16 @@ async function login(
   user.value.name = name;
 }
 
+async function fetchDiet() {
+  const activeDiet = await apiClient.fetchActiveDiet();
+  diet.value = activeDiet;
+}
+
 onMounted(() => {
   nextTick(() => {
-    login();
+    login().then(() => {
+      fetchDiet();
+    });
   });
 });
 </script>

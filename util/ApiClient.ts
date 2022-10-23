@@ -58,15 +58,24 @@ class ApiClient {
     );
     return data;
   }
-
-  async fetchAllDiets(): Promise<GetAllDietsResponse> {
-    const { data } = await this.cli.get<GetAllDietsResponse>(
-      routes.diet({ act: "1" })
+  async fetchDietStats(dietId: number): Promise<GetDietResponse> {
+    const { data } = await this.cli.get<GetDietResponse>(
+      routes.dietStats(dietId)
     );
     return data;
   }
 
-  async createDiet(diet: Diet): Promise<DefaultPostResponse> {
+  async fetchActiveDiet(): Promise<GetDietResponse> {
+    const { data } = await this.cli.get<GetAllDietsResponse>(
+      routes.diet({ act: "1" })
+    );
+    if (data && Array.isArray(data)) {
+      return await this.fetchDietStats(data.at(-1).id);
+    }
+    throw new Error("No diet found");
+  }
+
+  async createDiet(diet: Partial<Diet>): Promise<DefaultPostResponse> {
     const { data } = await this.cli.post<DefaultPostResponse>(
       routes.diet(),
       diet
@@ -74,9 +83,9 @@ class ApiClient {
     return data;
   }
 
-  async fetchDietStats(dietId: number): Promise<GetDietResponse> {
-    const { data } = await this.cli.get<GetDietResponse>(
-      routes.dietStats(dietId)
+  async fetchAllDiets(): Promise<GetAllDietsResponse> {
+    const { data } = await this.cli.get<GetAllDietsResponse>(
+      routes.diet({ act: "1" })
     );
     return data;
   }
