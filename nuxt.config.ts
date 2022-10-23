@@ -15,6 +15,7 @@ export default defineNuxtConfig({
   plugins: [
     { src: "@/plugin/font-awesome.ts", mode: "client" },
     { src: "@/plugin/vue-the-mask.ts", mode: "client" },
+    { src: "@/util/ApiClient.ts", mode: "client" },
   ],
   modules: ["bootstrap-vue-3/nuxt"],
   css: [

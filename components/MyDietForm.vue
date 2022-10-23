@@ -35,14 +35,14 @@
         <tr>
           <td>Sódio</td>
           <td>{{ diet.total.sodium }}mg</td>
-          <td>{{ 2000 - diet.total.sodium }}mg</td>
+          <td>{{ diet.available.sodium }}mg</td>
           <td>~2000mg</td>
         </tr>
         <tr>
           <td>Fibras</td>
           <td>{{ diet.total.fiber }}g</td>
-          <td>{{ 100 - diet.total.fiber }}g</td>
-          <td>~100g</td>
+          <td>{{ diet.available.fiber }}g</td>
+          <td>~70g</td>
         </tr>
       </table>
       <h6>Total de refeições: {{ diet.items }}</h6>
