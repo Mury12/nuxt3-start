@@ -33,38 +33,45 @@
     </template>
   </TheModal>
 </template>
-<script lang="ts">
-import { defineComponent } from "vue";
+<script lang="ts" setup>
+import { Auth } from "~~/types";
+import { apiClient } from "~~/util/ApiClient";
 
-export default defineComponent({
-  setup() {
-    const selected = ref(0);
-    const { isOpen, toggle, onClose, onOpen } = useDisclosure();
-    const modalTitle = computed(function () {
-      return selected.value === 1
-        ? "Minha Dieta"
-        : selected.value === 2
-        ? "Nova Dieta"
-        : selected.value === 3
-        ? "Adicionar Refeição"
-        : "Cadastrar Novo Alimento";
-    });
+const selected = ref(0);
 
-    function setSelected(idx: number) {
-      toggle();
-      this.selected = idx;
-    }
+const { isOpen, toggle, onClose, onOpen } = useDisclosure();
+const modalTitle = computed(function () {
+  return selected.value === 1
+    ? "Minha Dieta"
+    : selected.value === 2
+    ? "Nova Dieta"
+    : selected.value === 3
+    ? "Adicionar Refeição"
+    : "Cadastrar Novo Alimento";
+});
 
-    return {
-      selected,
-      setSelected,
-      isOpen,
-      toggle,
-      onClose,
-      onOpen,
-      modalTitle,
-    };
-  },
+const user = useComputedUser();
+
+function setSelected(idx: number) {
+  toggle();
+  this.selected = idx;
+}
+
+async function login(
+  auth: Auth = {
+    email: "mury_gh@hotmail.com",
+    password: "jnd2l3h23",
+  }
+) {
+  const { jwt, name } = await apiClient.authenticate(auth);
+  user.value.email = auth.email;
+  user.value.name = name;
+}
+
+onMounted(() => {
+  nextTick(() => {
+    login();
+  });
 });
 </script>
 

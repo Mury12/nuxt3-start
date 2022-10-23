@@ -1,4 +1,4 @@
-import { Axios } from "axios";
+import axios from "axios";
 import {
   GetAllDietsResponse,
   GetDietResponse,
@@ -25,11 +25,11 @@ const routes = {
   dietStats: (dietId: number) => `/diet/stat/${dietId}`,
 };
 
-export class ApiClient {
+class ApiClient {
   constructor(
-    private readonly cli = new Axios({
-      baseURL: "192.168.123.101:8081/ws/v2",
-      withCredentials: true,
+    private readonly cli = axios.create({
+      baseURL: "http://192.168.123.101:8081/ws/v2",
+      withCredentials: false,
     })
   ) {}
 
@@ -104,3 +104,6 @@ export class ApiClient {
     return data;
   }
 }
+
+const apiClient = new ApiClient();
+export { apiClient, ApiClient };

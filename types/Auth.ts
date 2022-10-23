@@ -5,4 +5,5 @@ export interface Auth {
 
 export interface AuthResponse {
   jwt: string;
+  name?: string;
 }
