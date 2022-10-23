@@ -18,7 +18,7 @@ import { objectToQueryFilters } from "./object-to-query-params";
 const routes = {
   auth: "/user/login",
   user: "/user",
-  meal: "/diet/meal",
+  meal: (today?: boolean) => `/diet/meal${today ? "?today=true" : ""}`,
   meals: "/diet/bulk-meal",
   foods: "/food",
   diet: (filters?: DietFilters) => `/diet${objectToQueryFilters(filters)}`,
@@ -104,7 +104,7 @@ class ApiClient {
   }
 
   async fetchTodayMeals(): Promise<GetMealsResponse> {
-    const { data } = await this.cli.get<GetMealsResponse>(routes.meal);
+    const { data } = await this.cli.get<GetMealsResponse>(routes.meal(true));
     return data;
   }
 

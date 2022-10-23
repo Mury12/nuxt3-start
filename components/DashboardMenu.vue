@@ -52,6 +52,7 @@ const modalTitle = computed(function () {
 
 const user = useComputedUser();
 const diet = useComputedDiet();
+const meals = useComputedMeals();
 
 function setSelected(idx: number) {
   toggle();
@@ -70,14 +71,20 @@ async function login(
 }
 
 async function fetchDiet() {
-  const activeDiet = await apiClient.fetchActiveDiet();
-  diet.value = activeDiet;
+  const result = await apiClient.fetchActiveDiet();
+  diet.value = result;
+}
+
+async function fetchMeals() {
+  const result = await apiClient.fetchTodayMeals();
+  meals.value = result;
 }
 
 onMounted(() => {
   nextTick(() => {
     login().then(() => {
       fetchDiet();
+      fetchMeals();
     });
   });
 });
