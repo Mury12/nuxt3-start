@@ -2,6 +2,12 @@
   <BRow class="new-diet-form my-3 rounded">
     <BCol cols="12" md="6">
       <form @submit.prevent="send" class="form-control">
+        <label>Tipo de cálculo:</label>
+        <BFormSelect v-model="strategy">
+          <option value="calories">Calorias</option>
+          <option value="weight">Por peso</option>
+          <option value="free">Manual</option> </BFormSelect
+        ><br />
         <label for="daily-weight">Peso Inicial</label>
         <BFormInput
           type="text"
@@ -13,29 +19,33 @@
         <BFormInput
           type="text"
           name="kcal"
-          :v-model="kcal"
           v-mask="decimalMask"
+          :v-model="kcal"
+          :readonly="/free|weight/gi.test(strategy)"
         />
         <label for="daily-carb">Carboidratos</label>
         <BFormInput
           type="text"
           name="carb"
-          :v-model="form.carb"
           v-mask="decimalMask"
+          :v-model="form.carb"
+          :readonly="/calories|weight/gi.test(strategy)"
         />
         <label for="daily-prot">Proteinas</label>
         <BFormInput
           type="text"
           name="prot"
-          :v-model="form.prot"
           v-mask="decimalMask"
+          :v-model="form.prot"
+          :readonly="/calories|weight/gi.test(strategy)"
         />
         <label for="daily-tfat">Gorduras</label>
         <BFormInput
           type="text"
           name="tfat"
-          :v-model="form.tfat"
           v-mask="decimalMask"
+          :v-model="form.tfat"
+          :readonly="/calories|weight/gi.test(strategy)"
         />
         <div class="text-end w-100">
           <BButton type="submit" class="mt-3">Salvar</BButton>
@@ -66,15 +76,19 @@
   </BRow>
 </template>
 <script lang="ts" setup>
-import { Diet } from "@/types";
+import { Diet, DietGenStrategy } from "@/types";
 import { decimalMask } from "@/util/decimal-mask";
 
 const kcal = ref(0);
+const strategy = ref<DietGenStrategy>("weight");
 const form = ref<Diet>({
   carb: 0,
   prot: 0,
   tfat: 0,
   weight: 0,
+  sodium: 2000,
+  fiber: 100,
+  calories: 0,
 });
 
 function send() {

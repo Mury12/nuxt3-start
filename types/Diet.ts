@@ -1,22 +1,13 @@
-export interface Diet {
-  weight: number;
-  carb: number;
-  prot: number;
-  tfat: number;
-}
+import { Macro } from "./Macro";
 
-export interface DietStats {
-  carb: number;
-  prot: number;
-  tfat: number;
-  calories: number;
-  fibers: number;
-  sodium: number;
+export interface Diet extends Macro {
+  weight: number;
 }
 
 export interface GetDietResponse extends Diet {
-  total: DietStats;
-  available: DietStats;
+  total: Macro;
+  available: Macro;
   items: number;
-  calories: number;
 }
+
+export type DietGenStrategy = "weight" | "calories" | "free";

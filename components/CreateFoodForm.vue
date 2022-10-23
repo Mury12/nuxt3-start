@@ -44,12 +44,8 @@
           v-mask="decimalMask"
           required
         />
-
-        <div class="text-end w-100">
-          <BButton type="submit" class="mt-3">Salvar</BButton>
-        </div>
       </BCol>
-      <BCol cols="6">
+      <BCol cols="12" md="6">
         <div class="px-2">
           <h2>Instruções:</h2>
           <ol class="guide d-flex flex-column">
@@ -85,36 +81,44 @@
           name="weight"
           v-model="form.unit"
         />
+        <div class="text-end w-100">
+          <BButton type="submit" class="mt-3">Salvar</BButton>
+        </div>
       </BCol>
     </BRow>
   </form>
 </template>
 
 <script lang="ts" setup>
-import { Food, MacroMultiplier } from "~~/types";
+import { Food } from "~~/types";
 import { decimalMask } from "@/util/decimal-mask";
-import { debounce } from "~~/util/debounce";
+import { getMacrosCalories } from "~~/util/get-macros-calories";
 
 const form = ref<Food>({
+  name: "",
   calories: undefined,
   carb: undefined,
   prot: undefined,
   tfat: undefined,
   fiber: undefined,
-  name: "",
   sodium: undefined,
-  unit: "",
   weight: undefined,
+  unit: "",
 });
 
-const kcal = computed(() => {
-  const { carb, tfat, prot } = form.value;
-  return Math.ceil(
-    (carb || 0) * MacroMultiplier.carbohydrates +
-      (tfat || 0) * MacroMultiplier.fat +
-      (prot || 0) * MacroMultiplier.protein
-  );
-});
+const kcal = ref(0);
+
+watch(
+  form,
+  (n) => {
+    kcal.value = getMacrosCalories(form.value);
+    // Avoid watch trigger but updates but updates the form content
+    if (n.calories !== kcal.value) {
+      form.value.calories = kcal.value;
+    }
+  },
+  { deep: true }
+);
 
 function send() {
   return;
