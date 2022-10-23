@@ -8,45 +8,73 @@
           <option value="weight">Por peso</option>
           <option value="free">Manual</option> </BFormSelect
         ><br />
-        <label for="daily-weight">Peso Inicial</label>
-        <BFormInput
-          type="text"
-          name="weight"
-          :v-model="form.weight"
-          v-mask="decimalMask"
-        />
-        <label for="daily-kcal">Calorias ao dia</label>
-        <BFormInput
-          type="text"
-          name="kcal"
-          v-mask="decimalMask"
-          :v-model="kcal"
-          :readonly="/free|weight/gi.test(strategy)"
-        />
-        <label for="daily-carb">Carboidratos</label>
-        <BFormInput
-          type="text"
-          name="carb"
-          v-mask="decimalMask"
-          :v-model="form.carb"
-          :readonly="/calories|weight/gi.test(strategy)"
-        />
-        <label for="daily-prot">Proteinas</label>
-        <BFormInput
-          type="text"
-          name="prot"
-          v-mask="decimalMask"
-          :v-model="form.prot"
-          :readonly="/calories|weight/gi.test(strategy)"
-        />
-        <label for="daily-tfat">Gorduras</label>
-        <BFormInput
-          type="text"
-          name="tfat"
-          v-mask="decimalMask"
-          :v-model="form.tfat"
-          :readonly="/calories|weight/gi.test(strategy)"
-        />
+
+        <BRow>
+          <BCol cols="12" v-if="strategy === 'weight'">
+            <label>Estratégia</label> <br />
+            <BFormRadioGroup v-model="goal">
+              <BFormRadio :value="StrategyMult.gain" checked
+                >Leve (-déficit)</BFormRadio
+              >
+              <BFormRadio :value="StrategyMult.keep">Normal</BFormRadio>
+              <BFormRadio :value="StrategyMult.loss"
+                >Agressiva (+déficit)</BFormRadio
+              >
+            </BFormRadioGroup>
+          </BCol>
+          <BCol cols="12" md="6"
+            ><label for="daily-weight">Peso Inicial</label>
+            <BFormInput
+              type="text"
+              name="weight"
+              v-model="weight"
+              v-mask="decimalMask"
+          /></BCol>
+          <BCol cols="12" md="6"
+            ><label for="daily-weight">Peso Meta</label>
+            <BFormInput
+              type="text"
+              name="weight"
+              v-model="goalWeight"
+              v-mask="decimalMask"
+          /></BCol>
+          <BCol cols="12" md="6"
+            ><label for="daily-kcal">Calorias ao dia</label>
+            <BFormInput
+              type="text"
+              name="kcal"
+              v-mask="['######']"
+              v-model="kcal"
+              :readonly="/free|weight/gi.test(strategy)"
+          /></BCol>
+          <BCol cols="12" md="6"
+            ><label for="daily-carb">Carboidratos</label>
+            <BFormInput
+              type="text"
+              name="carb"
+              v-mask="['###']"
+              v-model="carb"
+              :readonly="/calories|weight/gi.test(strategy)"
+          /></BCol>
+          <BCol cols="12" md="6"
+            ><label for="daily-prot">Proteinas</label>
+            <BFormInput
+              type="text"
+              name="prot"
+              v-mask="['###']"
+              v-model="prot"
+              :readonly="/calories|weight/gi.test(strategy)"
+          /></BCol>
+          <BCol cols="12" md="6">
+            <label for="daily-tfat">Gorduras</label>
+            <BFormInput
+              type="text"
+              name="tfat"
+              v-mask="['###']"
+              v-model="tfat"
+              :readonly="/calories|weight/gi.test(strategy)"
+          /></BCol>
+        </BRow>
         <div class="text-end w-100">
           <BButton type="submit" class="mt-3">Salvar</BButton>
         </div>
@@ -54,45 +82,124 @@
     </BCol>
     <BCol cols="6">
       <div class="px-2">
-        <h2>Instruções:</h2>
-        <ol class="guide d-flex flex-column">
-          <li>
-            Se escolher por peso ou por calorias, insira seu peso e as proteínas
-            por quilo (em caso de dúvida, deixe como está).
-          </li>
-
-          <li>
-            Se escolher inserir macronutrientes, as calorias são calculadas
-            automaticamente.
-          </li>
-
-          <li>
-            Se escolher inserir calorias, os macronutrientes são calculados
-            automaticamente.
-          </li>
-        </ol>
+        <div class="guide d-flex flex-column mb-3 pb-3 border-bottom">
+          <StrategyInstructions :strategy="strategy" />
+        </div>
+        <table class="table table-stripped table-hover">
+          <thead>
+            <th colspan="2" class="text-center border-bottom">
+              Base de cálculo
+            </th>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Carboidratos</td>
+              <td>
+                {{ macroMult.carb * MacroMultiplier.carbohydrates * 100 }}%
+              </td>
+            </tr>
+            <tr>
+              <td>Proteinas</td>
+              <td>{{ macroMult.prot * MacroMultiplier.protein * 100 }}%</td>
+            </tr>
+            <tr>
+              <td>Gorduras</td>
+              <td>{{ macroMult.tfat * MacroMultiplier.fat * 100 }}%</td>
+            </tr>
+            <tr>
+              <td>Sódio:</td>
+              <td>~2000mg</td>
+            </tr>
+            <tr>
+              <td>Fibras</td>
+              <td>~70g</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          Referências:
+          <a
+            href="https://www.healthline.com/nutrition/best-macronutrient-ratio#bottom-line"
+          >
+            Healthline
+          </a>
+        </p>
       </div>
     </BCol>
   </BRow>
 </template>
 <script lang="ts" setup>
-import { Diet, DietGenStrategy } from "@/types";
+import {
+  Diet,
+  DietGenStrategy,
+  Macro,
+  StrategyMult,
+  MacroMultiplier,
+} from "@/types";
 import { decimalMask } from "@/util/decimal-mask";
+import { getMacrosCalories } from "~~/util/get-macros-calories";
+
+const strategy = ref<DietGenStrategy>("weight");
 
 const kcal = ref(0);
-const strategy = ref<DietGenStrategy>("weight");
-const form = ref<Diet>({
-  carb: 0,
-  prot: 0,
-  tfat: 0,
-  weight: 0,
-  sodium: 2000,
-  fiber: 100,
-  calories: 0,
+const carb = ref(0);
+const prot = ref(0);
+const tfat = ref(0);
+const weight = ref(0);
+const goalWeight = ref<string>("0");
+
+const macroMult = useMacroDistribution().value;
+const goal = ref<StrategyMult>(StrategyMult.loss);
+
+const totalKcal = computed(() => {
+  if (strategy.value === "calories") return kcal.value;
+  if (strategy.value === "free")
+    return getMacrosCalories({
+      prot: prot.value,
+      tfat: tfat.value,
+      carb: carb.value,
+    });
+  return Math.round(((+weight.value + +goalWeight.value) / 2) * goal.value);
+});
+
+const distributedMacros = computed<Partial<Macro>>(() => ({
+  tfat: Math.floor(totalKcal.value * macroMult.tfat),
+  prot: Math.floor(totalKcal.value * macroMult.prot),
+  carb: Math.floor(totalKcal.value * macroMult.carb),
+}));
+
+function setMacros() {
+  const dist = distributedMacros.value;
+  tfat.value = dist.tfat;
+  carb.value = dist.carb;
+  prot.value = dist.prot;
+}
+
+watch([kcal, goal], () => {
+  if (strategy.value === "calories") {
+    setMacros();
+  }
+});
+
+watch([tfat, carb, prot, goal], () => {
+  if (strategy.value === "free") {
+    kcal.value = totalKcal.value;
+  }
+});
+
+watch(weight, () => {
+  goalWeight.value = (weight.value - 5).toFixed(2);
+});
+
+watch([goalWeight, goal], () => {
+  if (strategy.value === "weight") {
+    kcal.value = totalKcal.value;
+    setMacros();
+  }
 });
 
 function send() {
-  console.log(form);
+  console.log("form");
 }
 </script>
 

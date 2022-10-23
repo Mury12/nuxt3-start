@@ -40,8 +40,8 @@
         </tr>
         <tr>
           <td>Fibras</td>
-          <td>{{ diet.total.fibers }}g</td>
-          <td>{{ 100 - diet.total.fibers }}g</td>
+          <td>{{ diet.total.fiber }}g</td>
+          <td>{{ 100 - diet.total.fiber }}g</td>
           <td>~100g</td>
         </tr>
       </table>
