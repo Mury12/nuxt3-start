@@ -9,9 +9,10 @@
   },
   "devDependencies": {},
   "dependencies": {
-    "nuxt": "3.3.2",
     "@popperjs/core": "^2.11.6",
     "bootstrap": "^5.2.2",
-    "bootstrap-vue-3": "^0.5.1"
+    "bootstrap-vue-3": "^0.5.1",
+    "nuxt": "3.3.2",
+    "sass": "^1.69.5"
   }
 }
